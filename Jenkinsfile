@@ -59,7 +59,7 @@ pipeline {
         stage('Docker Image Push') {
             steps {
                 echo 'Docker Image Push'  
-                sh "docker push garden990915/spring-petclinic:latest"  // docker push
+                sh "docker push goldengarden/spring-petclinic:latest"  // docker push
             }
         }
         stage('Cleaning up') { 
@@ -67,8 +67,8 @@ pipeline {
               // docker image 제거
                 echo 'Cleaning up unused Docker images on Jenkins server'
                 sh """
-                docker rmi garden990915/spring-petclinic:$BUILD_NUMBER
-                docker rmi garden990915/spring-petclinic:latest
+                docker rmi goldengarden/spring-petclinic:$BUILD_NUMBER
+                docker rmi goldengarden/spring-petclinic:latest
                 """
             }
         }
