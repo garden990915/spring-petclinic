@@ -63,16 +63,14 @@ pipeline {
             }
         }
         stage('Cleaning up') { 
-		        steps { 
+	    steps { 
               // docker image 제거
-              echo 'Cleaning up unused Docker images on Jenkins server'
-              sh """
-              docker rmi garden990915/spring-petclinic:$BUILD_NUMBER
-              docker rmi garden990915/spring-petclinic:latest
-              """
+                echo 'Cleaning up unused Docker images on Jenkins server'
+                sh """
+                docker rmi garden990915/spring-petclinic:$BUILD_NUMBER
+                docker rmi garden990915/spring-petclinic:latest
+                """
             }
         }
-        
-        
     }
 }
