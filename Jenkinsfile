@@ -8,7 +8,7 @@ pipeline {
     environment { 
         DOCKERHUB_CREDENTIALS = credentials('dockerCredentials')
         REGION = "ap-northeast-2"
-        AWS_CREDENTIALS = credentials('AWSCredentials')
+        AWS_CREDENTIAL_NAME = credentials('AWSCredentials')
     }
 
     stages {
@@ -79,7 +79,7 @@ pipeline {
                 echo "Upload to S3"
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy.zip ./deploy appspec.yml'
-                    withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIALS}") {
+                    withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}") {
                         s3Upload(file:"deploy.zip", bucket:"user03-codedeploy-bucket")
                     }
                     sh 'rm -rf ./deploy.zip'
