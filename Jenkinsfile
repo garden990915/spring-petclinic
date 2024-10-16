@@ -43,8 +43,8 @@ pipeline {
                 echo 'Docker Image build'                
                 dir("${env.WORKSPACE}") {
                     sh """
-                    docker build -t garden990915/spring-petclinic:$BUILD_NUMBER .
-                    docker tag garden990915/spring-petclinic:$BUILD_NUMBER garden990915/spring-petclinic:latest
+                    docker build -t goldengarden/spring-petclinic:$BUILD_NUMBER .
+                    docker tag goldengarden/spring-petclinic:$BUILD_NUMBER goldengarden/spring-petclinic:latest
                     """
                 }
             }
