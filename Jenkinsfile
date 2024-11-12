@@ -86,6 +86,38 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+              steps {
+                echo 'Deploying to Kubernetes'
+                script {
+                        withKubeCredentials(kubectlCredentials: [[
+                                caCertificate: '',
+                                clusterName: 'Team1_k8s',
+                                contextName: '',
+                                credentialsId: 'k8sCredentials',
+                                namespace: 'default', // 필요한 경우 네임스페이스 지정
+                                serverUrl: 'https://10.100.202.114:6443'
+                        ]]) {
+	                    sh """
+                            kubectl apply -f ./k8s_react.yml
+	                    kubectl apply -f ./k8s_spring.yml
+                            """
+	                    //sh """
+     	                    //kubectl apply -f ./team1_k8s.yml
+    	                    //"""
+	                    sleep(15)
+                            sh """
+	                    kubectl rollout restart deployment/team1react -n team1
+	                    kubectl rollout restart deployment/team1spring -n team1
+	                    """
+	                    sleep(10)
+	                    sh """
+     	                    kubectl get pods -n team1
+	                    """  
+                        }
+                }
+              }
+        }
             
     }
 }
