@@ -92,12 +92,11 @@ pipeline {
     	                    """
 	                    sleep(15)
                             sh """
-	                    kubectl rollout restart deployment/team1react -n team1
-	                    kubectl rollout restart deployment/team1spring -n team1
+	                    kubectl rollout restart deployment/spring-petclinic
 	                    """
 	                    sleep(10)
 	                    sh """
-     	                    kubectl get pods -n team1
+     	                    kubectl get pods
 	                    """  
                         }
                 }
