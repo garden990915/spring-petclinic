@@ -7,8 +7,7 @@ pipeline {
     }
     environment { 
         DOCKERHUB_CREDENTIALS = credentials('dockerCredentials')
-        REGION = "ap-northeast-2"
-        AWS_CREDENTIAL_NAME = "AWSCredentials"
+        K8S_TOKEN = credentials('k8sCredentials')
     }
 
     stages {
@@ -74,18 +73,7 @@ pipeline {
                 """
             }
         }
-        stage('Upload S3') {
-            steps {
-                echo "Upload to S3"
-                dir("${env.WORKSPACE}") {
-                    sh 'zip -r deploy.zip ./deploy appspec.yml'
-                    withAWS(region:"${REGION}", credentials: "${AWS_CREDENTIAL_NAME}") {
-                        s3Upload(file:"deploy.zip", bucket:"user03-codedeploy-bucket")
-                    }
-                    sh 'rm -rf ./deploy.zip'
-                }
-            }
-        }
+        
         stage('Deploy to Kubernetes') {
               steps {
                 echo 'Deploying to Kubernetes'
@@ -99,12 +87,9 @@ pipeline {
                                 serverUrl: 'https://10.100.202.114:6443'
                         ]]) {
 	                    sh """
-                            kubectl apply -f ./k8s_react.yml
-	                    kubectl apply -f ./k8s_spring.yml
-                            """
-	                    //sh """
-     	                    //kubectl apply -f ./team1_k8s.yml
-    	                    //"""
+     	                    kubectl apply -f spring-petclinic-deployment.yml
+                            kubectl apply -f spring-petclinic-ingress.yml
+    	                    """
 	                    sleep(15)
                             sh """
 	                    kubectl rollout restart deployment/team1react -n team1
