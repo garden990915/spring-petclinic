@@ -21,7 +21,7 @@ spec:
         - containerPort: 8080  # 컨테이너에서 노출할 포트
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "prod"  # 필요에 따라 환경 변수 설정
+          value: "mysql"  # 필요에 따라 환경 변수 설정
         resources:
           limits:
             memory: "512Mi"  # 메모리 리미트
